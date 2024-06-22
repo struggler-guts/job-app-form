@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useForm from '../hooks/useForm';
+import FormSummary from './FormSummary';
 
 const initialState = {
   fullName: '',
@@ -85,156 +86,143 @@ const JobApplicationForm = () => {
     }
   };
 
+  const handleBack = () => {
+    setShowSummary(false);
+  };
+
   return (
     <div className="form-container">
       <h1>Job Application Form</h1>
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <label htmlFor="fullName">Full Name</label>
-          <input
-            type="text"
-            id="fullName"
-            name="fullName"
-            value={values.fullName}
-            onChange={handleChange}
-          />
-          {errors.fullName && <p className="error">{errors.fullName}</p>}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={values.email}
-            onChange={handleChange}
-          />
-          {errors.email && <p className="error">{errors.email}</p>}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="phoneNumber">Phone Number</label>
-          <input
-            type="tel"
-            id="phoneNumber"
-            name="phoneNumber"
-            value={values.phoneNumber}
-            onChange={handleChange}
-          />
-          {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="position">Applying for Position</label>
-          <select
-            id="position"
-            name="position"
-            value={values.position}
-            onChange={handleChange}
-          >
-            <option value="">Select a position</option>
-            <option value="Developer">Developer</option>
-            <option value="Designer">Designer</option>
-            <option value="Manager">Manager</option>
-          </select>
-        </div>
-
-        {(values.position === 'Developer' || values.position === 'Designer') && (
+      {!showSummary ? (
+        <form onSubmit={onSubmit}>
           <div className="form-group">
-            <label htmlFor="relevantExperience">Relevant Experience (years)</label>
+            <label htmlFor="fullName">Full Name</label>
             <input
-              type="number"
-              id="relevantExperience"
-              name="relevantExperience"
-              value={values.relevantExperience}
+              type="text"
+              id="fullName"
+              name="fullName"
+              value={values.fullName}
               onChange={handleChange}
             />
-            {errors.relevantExperience && <p className="error">{errors.relevantExperience}</p>}
+            {errors.fullName && <p className="error">{errors.fullName}</p>}
           </div>
-        )}
 
-        {values.position === 'Designer' && (
           <div className="form-group">
-            <label htmlFor="portfolioUrl">Portfolio URL</label>
+            <label htmlFor="email">Email</label>
             <input
-              type="url"
-              id="portfolioUrl"
-              name="portfolioUrl"
-              value={values.portfolioUrl}
+              type="email"
+              id="email"
+              name="email"
+              value={values.email}
               onChange={handleChange}
             />
-            {errors.portfolioUrl && <p className="error">{errors.portfolioUrl}</p>}
+            {errors.email && <p className="error">{errors.email}</p>}
           </div>
-        )}
 
-        {values.position === 'Manager' && (
           <div className="form-group">
-            <label htmlFor="managementExperience">Management Experience</label>
-            <textarea
-              id="managementExperience"
-              name="managementExperience"
-              value={values.managementExperience}
+            <label htmlFor="phoneNumber">Phone Number</label>
+            <input
+              type="tel"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={values.phoneNumber}
               onChange={handleChange}
             />
-            {errors.managementExperience && <p className="error">{errors.managementExperience}</p>}
+            {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
           </div>
-        )}
 
-        <div className="form-group">
-          <label>Additional Skills</label>
-          <div className="checkbox-group">
-            {['JavaScript', 'CSS', 'Python', 'React', 'Node.js'].map(skill => (
-              <label key={skill}>
-                <input
-                  type="checkbox"
-                  name="skills"
-                  value={skill}
-                  checked={values.skills.includes(skill)}
-                  onChange={() => handleSkillChange(skill)}
-                />
-                {skill}
-              </label>
-            ))}
+          <div className="form-group">
+            <label htmlFor="position">Applying for Position</label>
+            <select
+              id="position"
+              name="position"
+              value={values.position}
+              onChange={handleChange}
+            >
+              <option value="">Select a position</option>
+              <option value="Developer">Developer</option>
+              <option value="Designer">Designer</option>
+              <option value="Manager">Manager</option>
+            </select>
           </div>
-          {errors.skills && <p className="error">{errors.skills}</p>}
-        </div>
 
-        <div className="form-group">
-          <label htmlFor="interviewTime">Preferred Interview Time</label>
-          <DatePicker
-            selected={values.interviewTime}
-            onChange={handleDateChange}
-            showTimeSelect
-            dateFormat="MMMM d, yyyy h:mm aa"
-          />
-          {errors.interviewTime && <p className="error">{errors.interviewTime}</p>}
-        </div>
-
-        <button type="submit" disabled={isSubmitting}>
-          Submit Application
-        </button>
-      </form>
-
-      {showSummary && (
-        <div className="summary">
-          <h2>Application Summary</h2>
-          <p><strong>Full Name:</strong> {values.fullName}</p>
-          <p><strong>Email:</strong> {values.email}</p>
-          <p><strong>Phone Number:</strong> {values.phoneNumber}</p>
-          <p><strong>Position:</strong> {values.position}</p>
           {(values.position === 'Developer' || values.position === 'Designer') && (
-            <p><strong>Relevant Experience:</strong> {values.relevantExperience} years</p>
+            <div className="form-group">
+              <label htmlFor="relevantExperience">Relevant Experience (years)</label>
+              <input
+                type="number"
+                id="relevantExperience"
+                name="relevantExperience"
+                value={values.relevantExperience}
+                onChange={handleChange}
+              />
+              {errors.relevantExperience && <p className="error">{errors.relevantExperience}</p>}
+            </div>
           )}
+
           {values.position === 'Designer' && (
-            <p><strong>Portfolio URL:</strong> {values.portfolioUrl}</p>
+            <div className="form-group">
+              <label htmlFor="portfolioUrl">Portfolio URL</label>
+              <input
+                type="url"
+                id="portfolioUrl"
+                name="portfolioUrl"
+                value={values.portfolioUrl}
+                onChange={handleChange}
+              />
+              {errors.portfolioUrl && <p className="error">{errors.portfolioUrl}</p>}
+            </div>
           )}
+
           {values.position === 'Manager' && (
-            <p><strong>Management Experience:</strong> {values.managementExperience}</p>
+            <div className="form-group">
+              <label htmlFor="managementExperience">Management Experience</label>
+              <textarea
+                id="managementExperience"
+                name="managementExperience"
+                value={values.managementExperience}
+                onChange={handleChange}
+              />
+              {errors.managementExperience && <p className="error">{errors.managementExperience}</p>}
+            </div>
           )}
-          <p><strong>Additional Skills:</strong> {values.skills.join(', ')}</p>
-          <p><strong>Preferred Interview Time:</strong> {values.interviewTime.toString()}</p>
-        </div>
+
+          <div className="form-group">
+            <label>Additional Skills</label>
+            <div className="checkbox-group">
+              {['JavaScript', 'CSS', 'Python', 'React', 'Node.js'].map(skill => (
+                <label key={skill}>
+                  <input
+                    type="checkbox"
+                    name="skills"
+                    value={skill}
+                    checked={values.skills.includes(skill)}
+                    onChange={() => handleSkillChange(skill)}
+                  />
+                  {skill}
+                </label>
+              ))}
+            </div>
+            {errors.skills && <p className="error">{errors.skills}</p>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="interviewTime">Preferred Interview Time</label>
+            <DatePicker
+              selected={values.interviewTime}
+              onChange={handleDateChange}
+              showTimeSelect
+              dateFormat="MMMM d, yyyy h:mm aa"
+            />
+            {errors.interviewTime && <p className="error">{errors.interviewTime}</p>}
+          </div>
+
+          <button type="submit" disabled={isSubmitting}>
+            Submit Application
+          </button>
+        </form>
+      ) : (
+        <FormSummary values={values} onBack={handleBack} />
       )}
     </div>
   );
